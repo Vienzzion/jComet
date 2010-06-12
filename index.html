@@ -4,6 +4,9 @@
 	<title>jQuery streaming plugin</title>
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="jquery.push-polling.js"></script>
+	<script type="text/javascript" src="utf8-encoding.js"></script>
+	<script type="text/javascript" src="php-serialize.js"></script>
+	<script type="text/javascript" src="jcomet.js"></script>
 	<style type="text/css">
 	
 		#here {
@@ -20,18 +23,12 @@
 	
 	<script type="text/javascript">
 	
-		window.poller = null;
-	
-		function run_test() {
-			var here = $('#here')[0];
-			window.poller = new $.PushPoller({
-				url: 'jscomet.php',
-				onreceive: function(response) {
-					here.innerHTML += response;
-				}
-			});
-			window.poller.initialize();
-		}
+		var poller = new jComet({
+			url: 'jcomet.php',
+			onreceive: function(data) {
+				console.log(unserialize(data));
+			}
+		});
 	
 	</script>
 

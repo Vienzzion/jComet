@@ -36,7 +36,7 @@ var _defaultSettings = {
 	password: false,
 	
 	// how frequently to reload the connection
-	reloadTimeout: 10000,
+	refreshInterval: 10000,
 	
 	// callback to construct the xhr object
 	xhr: false,
@@ -74,7 +74,7 @@ $.PushPoller = function(settings) {
 			cache: s.cache,
 			dataType: s.dataType,
 			url: s.url,
-			timeout: s.reloadTimeout,
+			timeout: s.refreshInterval,
 			complete: function(data, status) {
 				if (status === 'success') {
 					s.onreceive(data.responseText);
