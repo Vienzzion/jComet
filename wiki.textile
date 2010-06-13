@@ -1,0 +1,5 @@
+h1. Welcome to the jComet Wiki!
+
+jComet is a JavaScript / PHP library for easily creating "comet":http://en.wikipedia.org/wiki/Comet_(programming) based web applications built on top of the "jQuery":http://jquery.com JavaScript framework.
+
+h2. 
