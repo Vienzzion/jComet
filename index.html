@@ -1,99 +1,103 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>kbjr/jComet @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #455fb5;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #baa04a; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #baa04a; }
-    h3 { text-align: center; color: #baa04a; }
-    a { color: #baa04a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	
 </head>
-
 <body>
-  <a href="http://github.com/kbjr/jComet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
-  <div id="container">
+	<a href="http://github.com/kbjr/jComet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
-    <div class="download">
-      <a href="http://github.com/kbjr/jComet/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/kbjr/jComet/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+	<div id="container">
 
-    <h1><a href="http://github.com/kbjr/jComet">jComet</a>
-      <span class="small">by <a href="http://github.com/kbjr">kbjr</a></span></h1>
+		<div class="download">
+			<a href="http://github.com/kbjr/jComet/zipball/master">
+			<img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+			<a href="http://github.com/kbjr/jComet/tarball/master">
+			<img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+		</div>
 
-    <div class="description">
-      A JavaScript / PHP library for easily developing push-based web applications
-    </div>
+		<h1><a href="http://github.com/kbjr/jComet">jComet</a>
+			<span class="small">by <a href="http://github.com/kbjr">kbjr</a></span></h1>
 
-    <p>jComet is a JavaScript / PHP library for easily creating <a href="http://en.wikipedia.org/wiki/Comet_(programming)">comet</a> based web applications built on top of the a href="http://jquery.com">jQuery</a> JavaScript framework.
+		<div class="description">
+			A JavaScript / PHP library for easily developing push-based web applications
+		</div>
 
-Just about everything on the internet is, what in the industry is called, a "pull" technology. This means that your users request something, and you give it to them. What, though, do you do if you want to tell your user something, or "push" something to them, without them having toask for it ahead of time? For example, some event occurs on the server-side (eg. someone else posts something on your website) and you want to update them about this by sending them a message. You could set up some client side code that constantly makes repeated requests to the server (say, once every second or every few seconds), but that can put a heavy load on both the server and the client. So, instead, we just "push" the information to them.
+		<p>
+			jComet is a JavaScript / PHP library for easily creating
+			<a href="http://en.wikipedia.org/wiki/Comet_(programming)">comet</a> based web
+			applications built on top of the <a href="http://jquery.com">jQuery</a>
+			JavaScript framework.
+		</p>
 
-This type of technology has many uses such as updating a forum post or shout box as new posts come in or alerting a user when a particular piece of data becomes available for request. However, there are also tasks that jComet should not be used for. For example, if you want to set up instant messaging on your website, there are whole protocols set up to accomplish this.</p><h2>Dependencies</h2>
-<p>PHP >= 5.3.0
-jQuery >= 1.4</p>
-<h2>Install</h2>
-<p><a href="http://github.com/kbjr/jComet/downloads">Download the code</a> from GitHub and extract the archive into a directory under your website. (Download not yet ready)</p>
-<h2>License</h2>
-<p>Dual licensed under MIT and GPL</p>
-<h2>Authors</h2>
-<p>James Brumond (kbjr14@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>James Brumond (kbjr14@gmail.com)<br/>      </p>
+		<p>
+			Just about everything on the internet is, what in the industry is called, a "pull" technology. This means that
+			your users request something, and you give it to them. What, though, do you do if you want to tell your user
+			something, or "push" something to them, without them having toask for it ahead of time? For example, some
+			event occurs on the server-side (eg. someone else posts something on your website) and you want to update them
+			about this by sending them a message. You could set up some client side code that constantly makes repeated
+			requests to the server (say, once every second or every few seconds), but that can put a heavy load on both
+			the server and the client. So, instead, we just "push" the information to them.
+		</p>
+	
+		<p>
+			This type of technology has many uses such as updating a forum post or shout box as new posts come in or
+			alerting a user when a particular piece of data becomes available for request. However, there are also tasks
+			that jComet should not be used for. For example, if you want to set up instant messaging on your website, there
+			are whole protocols set up to accomplish this.
+		</p>
 
+		<h2>Dependencies</h2>
+		<p>PHP >= 5.3.0, jQuery >= 1.4</p>
+	
+		<h2>Install</h2>
+		<p>
+			<a href="http://github.com/kbjr/jComet/downloads">Download the code</a> from GitHub and extract the archive
+			into a directory under your website. (Download not yet ready)
+		</p>
+	
+		<h2>License</h2>
+		<p>Dual licensed under MIT and GPL</p>
+	
+		<h2>Authors</h2>
+		<p>James Brumond (kbjr14@gmail.com)</p>
+	
+		<h2>Contact</h2>
+		<p>James Brumond (kbjr14@gmail.com)</p>
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/kbjr/jComet/zipball/master">zip</a> or
-      <a href="http://github.com/kbjr/jComet/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/kbjr/jComet</pre>
-    </p>
+		<h2>Download</h2>
+		<p>
+			You can download this project in either
+			<a href="http://github.com/kbjr/jComet/zipball/master">zip</a> or
+			<a href="http://github.com/kbjr/jComet/tarball/master">tar</a> formats.
+		</p>
+		<p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+			by running:
+			<pre>$ git clone git://github.com/kbjr/jComet</pre>
+		</p>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/kbjr/jComet">kbjr/jComet</a>
-    </div>
+		<div class="footer">
+			get the source code on GitHub : <a href="http://github.com/kbjr/jComet">kbjr/jComet</a>
+		</div>
 
-  </div>
+	</div>
 
-  <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-15372832-6");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost +
+			"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-15372832-6");
+			pageTracker._trackPageview();
+		} catch(err) { }
+	</script>
+
 </body>
 </html>
