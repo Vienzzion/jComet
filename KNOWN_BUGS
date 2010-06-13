@@ -1,0 +1,8 @@
+KNOWN BUGS
+
+Known Bug #001
+Added: 12 June, 2010
+Status: Open
+Description: sometimes, the first push of a fresh connection is not received.
+
+

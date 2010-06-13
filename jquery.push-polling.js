@@ -81,7 +81,7 @@ $.PushPoller = function(settings) {
 	
 	error = function(type) {
 		if (type == 'abort') {
-			debug(type, 'msg');
+			debug('Push Poller Aborted', 'msg');
 		} else {
 			debug(type);
 			debug('running: ' + running.toString());
