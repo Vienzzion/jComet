@@ -15,6 +15,20 @@
  */
 
 /*
+ * If requested, reset the session
+ */
+	if (isset($_GET['reset'])) {
+		session_unset();
+		die('Session Cleared');
+	}
+
+/*
+ * Allow the script to run forever independent of the client
+ */
+	ignore_user_abort(true);
+	set_time_limit(0);
+
+/*
  * jComet Version String
  */
 	define("JCOMET_VERSION", "0.1.1");
@@ -38,7 +52,7 @@
 		abstract protected function get_data($previous);
 		
 		protected $interval = 1;
-		protected $id = 'pusher';
+		protected $id = 'jCometPusher';
 	
 		final public function __construct() {
 			if (! isset($_SESSION['jCometData'][$this->id]))
@@ -50,23 +64,19 @@
 				} catch (Exception $e) {
 					jCometExceptions::handle_exception($e);
 				}
-				if ($previous !== $result) {
-					$_SESSION['jCometData'][$this->id] = $result;
-					die(serialize($result));
+				if (connection_status() == 0) {
+					if ($previous !== $result) {
+						$_SESSION['jCometData'][$this->id] = $result;
+						die(serialize($result));
+					} else {
+						usleep($this->interval * 1000000);
+					}
 				} else {
-					sleep($interval);
+					die(connection_status());
 				}
 			}
 		}
 	
 	}
-	
-	class MyPusher extends jCometPusher {
-		protected function get_data($previous) {
-			return $previous + 1;
-		}
-	}
-	
-	new MyPusher();
 
 ?>

@@ -11,7 +11,9 @@
 
 (function(window, $) {
 
-var _defaultSettings = {
+var _debugging = true,
+
+_defaultSettings = {
 
 	// the request method [ 'get' | 'post' ]
 	type: 'get',
@@ -52,51 +54,118 @@ $.PushPoller = function(settings) {
 	xhr = null,
 	retries = 0,
 	running = false,
+	options = { },
 	
-	rerun = function(fail) {
-		if (running) {
-			if (fail) {
-				retries++;
-			} else {
-				retries = 0;
+	debug = function(msg, type) {
+		if (_debugging) {
+			var msg = '[' + Date() + '] - ' + ((msg) ? msg.toString() : '');
+			if (window.console) {
+				if (console.warn && type != 'msg') {
+					return console.warn(msg);
+				} else if (console.log) {
+					return console.log(msg);
+				}
 			}
-			if (retries > s.retryCount) {
-				return s.error('error');
-			}
-			self.initialize();
+			return alert(msg);
 		}
+	},
+	
+	retry = function() {
+		retries++;
+		if (retries > s.retryCount) {
+			return error('error');
+		} else {
+			openConnection();
+		}
+	},
+	
+	error = function(type) {
+		if (type == 'abort') {
+			debug(type, 'msg');
+		} else {
+			debug(type);
+			debug('running: ' + running.toString());
+			debug('retries: ' + retries);
+		}
+		running = false; retries = 0;
+		return s.error(type);
+	},
+	
+	refreshConnection = function() {
+		retries = 0;
+		openConnection();
+	},
+	
+	resetServerConnection = function() {
+		$.ajax({
+			url: '',
+			dataType: 'text',
+			success: function() {
+				refreshConnection();
+			}
+		});
+	},
+	
+	openConnection = function() {
+		running = true;
+		if (xhr && xhr.abort) xhr.abort();
+		xhr = $.ajax(options);
 	};
 	
 	self.initialize = function() {
-		running = true;
-		var options = {
+		retries = 0;
+		options = {
 			type: s.type,
 			cache: s.cache,
 			dataType: s.dataType,
 			url: s.url,
-			timeout: s.refreshInterval,
-			complete: function(data, status) {
-				if (status === 'success') {
-					s.onreceive(data.responseText);
-					rerun(false);
+			success: function(response) {
+				s.onreceive(response);
+				refreshConnection();
+			},
+			error: function(data, status) {
+				if (status === 'timeout') {
+					resetServerConnection();
 				} else {
-					rerun(status !== 'timeout');
+					retry();
 				}
 			}
 		};
 		if (s.username) options.username = s.username;
 		if (s.password) options.password = s.password;
 		if (s.xhr) options.xhr = s.xhr;
-		xhr = $.ajax(options);
+		if (s.refreshInterval) options.timeout = s.refreshInterval;
+		resetServerConnection();
 	};
 	
 	self.abort = function() {
 		running = false;
-		if (xhr) xhr.abort();
+		if (xhr && xhr.abort) xhr.abort();
 		xhr = null;
 		retries = 0;
-		s.error('abort');
+		error('abort');
 	};
+	
+	self.isOpen = function() {
+		return (running == true && xhr && xhr.readyState && xhr.readyState > 0);
+	};
+	
+	self.state = function() {
+		return (xhr && typeof xhr.readyState != 'undefined') ? xhr.readyState : 0;
+	};
+	
+	self.settings = function(settings) {
+		if (settings) options = $.extend(true, { }, _defaultSettings, options, settings);
+		return options;
+	};
+	
+	self._xhr = function() {
+		return xhr;
+	};
+	
+	self._retryCount = function() {
+		return retries;
+	}
 
 };
 

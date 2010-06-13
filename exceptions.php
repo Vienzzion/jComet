@@ -32,19 +32,19 @@ class jCometExceptions {
 	public static function handle_exception($e) {
 		// figure out the type of exception
 		switch ($e->getCode()) {
-			case self::MESSAGE:   # 0
+			case self::MESSAGE:        # 0
 			case E_NOTICE:             # 8 (built-in)
 			case E_USER_NOTICE:        # 1024 (built-in)
 				$type = 'Notice';
 				$return = true;
 				break;
-			case self::WARNING:   # 1
+			case self::WARNING:        # 1
 			case E_WARNING:            # 2 (built-in)
 			case E_USER_WARNING:       # 512 (built-in)
 				$type = 'Warning';
 				$return = true;
 				break;
-			case self::ERROR:  # 3
+			case self::ERROR:          # 3
 			case E_USER_ERROR:         # 256 (built-in)
 				$type = 'Error';
 				$return = false;
