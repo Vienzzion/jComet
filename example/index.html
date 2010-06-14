@@ -27,12 +27,13 @@
 	
 	<script type="text/javascript">
 	
-		var poller = new jComet({
+		var jCometHandler = new jComet({
 			url: 'read-database.php',
 			onreceive: function(data) {
 				display.innerHTML = "Last Update: " + data;
 			}
 		});
+		jCometHandler.start();
 	
 	</script>
 

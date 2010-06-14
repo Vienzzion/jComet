@@ -37,10 +37,12 @@ window.jComet = function(options) {
 	
 	self.start = function() {
 		poller.initialize();
+		return self;
 	};
 	
 	self.stop = function() {
 		poller.abort();
+		return self;
 	};
 	
 	self.isOpen = function() {
