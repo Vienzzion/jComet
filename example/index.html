@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+
+	<title>jComet Library Demonstration</title>
+	<script type="text/javascript" src="../jquery.js"></script>
+	<script type="text/javascript" src="../js-packer.php"></script>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+	<meta http-equiv="Content-Language" content="en" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="Author" content="James Brumond" />
+	
+	<style type="text/css">
+	
+		#display {
+			font-family: monospace;
+			font-size: 13px;
+		}
+	
+	</style>
+
+</head>
+<body>
+
+	<pre id="display"></pre>
+	
+	<script type="text/javascript">
+	
+		var poller = new jComet({
+			url: 'read-database.php',
+			onreceive: function(data) {
+				display.innerHTML = "Last Update: " + data;
+			}
+		});
+	
+	</script>
+
+</body>
+</html>

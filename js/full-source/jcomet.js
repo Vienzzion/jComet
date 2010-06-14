@@ -1,31 +1,22 @@
 /*
+ * jcomet.js
  *
+ * Software: jComet HTTP Pushing Library
+ * Author: James Brumond
+ * Version: 0.1.1
+ *
+ * Copyright 2010 James Brumond
+ * Dual licensed under MIT and GPL
  */
 
 (function(window, $) {
 
-// path to jComet relative to the document root;
-// must end in a slash (/)
-var jCometDirectory = '/kbjr/jComet/',
-
-_defaultSettings = {
+var  _defaultSettings = {
 	url: '',
 	onreceive: function() { },
 	error: function() { },
 	refreshInterval: 0
 };
-
-$.include = function(file) {
-	$.ajax({
-		url: file,
-		datatype: 'script',
-		method: 'post',
-		async: false
-	});
-};
-
-$.include(jCometDirectory + 'utf8-encoding.js');
-$.include(jCometDirectory + 'php-serialize.js');
 
 window.jComet = function(options) {
 

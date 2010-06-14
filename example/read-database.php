@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once "jcomet.php";
+require_once "../jcomet.php";
 
 class MyPusher extends jCometPusher {
 	protected $id = __CLASS__;

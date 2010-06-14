@@ -15,7 +15,7 @@
  * Which Copy of the JavaScript Should be Used?
  * @const JCOMET_SOURCE [ "full-source" | "packed" ]
  */
-	define("JCOMET_SOURCE", "packed");
+	define("JCOMET_SOURCE", "full-source");
 
 /*
  * What files need to be loaded?
