@@ -1,1 +1,259 @@
-function serialize(b){var c=function (d){var e=typeof d,f;var g;if (e=='object'&&!d){return 'null';}if (e=="object"){if (!d.constructor){return 'object';}var h=d.constructor.toString();f=h.match(/(\w+)\(/);if (f){h=f[1].toLowerCase();}var j=["boolean","number","string","array"];for (g in j){if (h==j[g]){e=j[g];break ;}}}return e;};var e=c(b);var k,l='';switch (e){case "function":k="";break ;case "boolean":k="b:"+(b?"1":"0");break ;case "number":k=(Math.round(b)==b?"i":"d")+":"+b;break ;case "string":b=this.utf8_encode(b);k="s:"+encodeURIComponent(b).replace(/%../g,'x').length+":\""+b+"\"";break ;case "array":case "object":k="a";var m=0;var n="";var o;var g;for (g in b){l=c(b[g]);if (l=="function"){continue ;}o=(g.match(/^[0-9]+$/)?parseInt(g,10):g);n+=this.serialize(o)+this.serialize(b[g]);m++;}k+=":"+m+":{"+n+"}";break ;case "undefined":default :k="N";break ;}if (e!="object"&&e!="array"){k+=";";}return k;}function unserialize(q){var r=this;var s=function (t){var u=t.charCodeAt(0);if (u<0x0080){return 0;}if (u<0x0800){return 1;}return 2;};var v=function (e,w,y,z){};var A=function (q,B,C){var D=[];var t=q.slice(B,B+1);var E=2;while (t!=C){if ((E+B)>q.length){v('Error','Invalid');}D.push(t);t=q.slice(B+(E-1),B+E);E+=1;}return [D.length,D.join('')];};var F=function (q,B,G){var D;D=[];for (var E=0;E<G;E++){var t=q.slice(B+(E-1),B+E);D.push(t);G-=s(t);}return [D.length,D.join('')];};var H=function (q,B){var I;var J;var K=0;var L;var M;var N;var O;if (!B){B=0;}var P=(q.slice(B,B+1)).toLowerCase();var Q=B+2;var R=function (S){return S;};switch (P){case 'i':R=function (S){return parseInt(S,10);};J=A(q,Q,';');K=J[0];I=J[1];Q+=K+1;break ;case 'b':R=function (S){return parseInt(S,10)!==0;};J=A(q,Q,';');K=J[0];I=J[1];Q+=K+1;break ;case 'd':R=function (S){return parseFloat(S);};J=A(q,Q,';');K=J[0];I=J[1];Q+=K+1;break ;case 'n':I=null;break ;case 's':L=A(q,Q,':');K=L[0];M=L[1];Q+=K+2;J=F(q,Q+1,parseInt(M,10));K=J[0];I=J[1];Q+=K+2;if (K!=parseInt(M,10)&&K!=I.length){v('SyntaxError','String length mismatch');}I=utf8_decode(I);break ;case 'a':I={};N=A(q,Q,':');K=N[0];O=N[1];Q+=K+2;for (var E=0;E<parseInt(O,10);E++){var T=H(q,Q);var U=T[1];var g=T[2];Q+=U;var V=H(q,Q);var W=V[1];var Y=V[2];Q+=W;I[g]=Y;}Q+=1;break ;default :v('SyntaxError','Unknown / Unhandled data type(s): '+P);break ;}return [P,Q-B,R(I)];};return H((q+''),0)[2];}
+function serialize (mixed_value) {
+    // Returns a string representation of variable (which can later be unserialized)  
+    // 
+    // version: 1004.2314
+    // discuss at: http://phpjs.org/functions/serialize
+    // +   original by: Arpad Ray (mailto:arpad@php.net)
+    // +   improved by: Dino
+    // +   bugfixed by: Andrej Pavlovic
+    // +   bugfixed by: Garagoth
+    // +      input by: DtTvB (http://dt.in.th/2008-09-16.string-length-in-bytes.html)
+    // +   bugfixed by: Russell Walker (http://www.nbill.co.uk/)
+    // +   bugfixed by: Jamie Beck (http://www.terabit.ca/)
+    // +      input by: Martin (http://www.erlenwiese.de/)
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // -    depends on: utf8_encode
+    // %          note: We feel the main purpose of this function should be to ease the transport of data between php & js
+    // %          note: Aiming for PHP-compatibility, we have to translate objects to arrays
+    // *     example 1: serialize(['Kevin', 'van', 'Zonneveld']);
+    // *     returns 1: 'a:3:{i:0;s:5:"Kevin";i:1;s:3:"van";i:2;s:9:"Zonneveld";}'
+    // *     example 2: serialize({firstName: 'Kevin', midName: 'van', surName: 'Zonneveld'});
+    // *     returns 2: 'a:3:{s:9:"firstName";s:5:"Kevin";s:7:"midName";s:3:"van";s:7:"surName";s:9:"Zonneveld";}'
+    var _getType = function (inp) {
+        var type = typeof inp, match;
+        var key;
+        if (type == 'object' && !inp) {
+            return 'null';
+        }
+        if (type == "object") {
+            if (!inp.constructor) {
+                return 'object';
+            }
+            var cons = inp.constructor.toString();
+            match = cons.match(/(\w+)\(/);
+            if (match) {
+                cons = match[1].toLowerCase();
+            }
+            var types = ["boolean", "number", "string", "array"];
+            for (key in types) {
+                if (cons == types[key]) {
+                    type = types[key];
+                    break;
+                }
+            }
+        }
+        return type;
+    };
+    var type = _getType(mixed_value);
+    var val, ktype = '';
+    
+    switch (type) {
+        case "function": 
+            val = ""; 
+            break;
+        case "boolean":
+            val = "b:" + (mixed_value ? "1" : "0");
+            break;
+        case "number":
+            val = (Math.round(mixed_value) == mixed_value ? "i" : "d") + ":" + mixed_value;
+            break;
+        case "string":
+            mixed_value = this.utf8_encode(mixed_value);
+            val = "s:" + encodeURIComponent(mixed_value).replace(/%../g, 'x').length + ":\"" + mixed_value + "\"";
+            break;
+        case "array":
+        case "object":
+            val = "a";
+            /*
+            if (type == "object") {
+                var objname = mixed_value.constructor.toString().match(/(\w+)\(\)/);
+                if (objname == undefined) {
+                    return;
+                }
+                objname[1] = this.serialize(objname[1]);
+                val = "O" + objname[1].substring(1, objname[1].length - 1);
+            }
+            */
+            var count = 0;
+            var vals = "";
+            var okey;
+            var key;
+            for (key in mixed_value) {
+                ktype = _getType(mixed_value[key]);
+                if (ktype == "function") { 
+                    continue; 
+                }
+                
+                okey = (key.match(/^[0-9]+$/) ? parseInt(key, 10) : key);
+                vals += this.serialize(okey) +
+                        this.serialize(mixed_value[key]);
+                count++;
+            }
+            val += ":" + count + ":{" + vals + "}";
+            break;
+        case "undefined": // Fall-through
+        default: // if the JS object has a property which contains a null value, the string cannot be unserialized by PHP
+            val = "N";
+            break;
+    }
+    if (type != "object" && type != "array") {
+        val += ";";
+    }
+    return val;
+}
+
+function unserialize (data) {
+    // http://kevin.vanzonneveld.net
+    // +     original by: Arpad Ray (mailto:arpad@php.net)
+    // +     improved by: Pedro Tainha (http://www.pedrotainha.com)
+    // +     bugfixed by: dptr1988
+    // +      revised by: d3x
+    // +     improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +        input by: Brett Zamir (http://brett-zamir.me)
+    // +     improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +     improved by: Chris
+    // +     improved by: James
+    // +        input by: Martin (http://www.erlenwiese.de/)
+    // +     bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +     improved by: Le Torbi
+    // +     input by: kilops
+    // +     bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // -      depends on: utf8_decode
+    // %            note: We feel the main purpose of this function should be to ease the transport of data between php & js
+    // %            note: Aiming for PHP-compatibility, we have to translate objects to arrays
+    // *       example 1: unserialize('a:3:{i:0;s:5:"Kevin";i:1;s:3:"van";i:2;s:9:"Zonneveld";}');
+    // *       returns 1: ['Kevin', 'van', 'Zonneveld']
+    // *       example 2: unserialize('a:3:{s:9:"firstName";s:5:"Kevin";s:7:"midName";s:3:"van";s:7:"surName";s:9:"Zonneveld";}');
+    // *       returns 2: {firstName: 'Kevin', midName: 'van', surName: 'Zonneveld'}
+
+    var that = this;
+    var utf8Overhead = function(chr) {
+        // http://phpjs.org/functions/unserialize:571#comment_95906
+        var code = chr.charCodeAt(0);
+        if (code < 0x0080) {
+            return 0;
+        }
+        if (code < 0x0800) {
+             return 1;
+        }
+        return 2;
+    };
+
+
+    var error = function (type, msg, filename, line){ };
+    var read_until = function (data, offset, stopchr){
+        var buf = [];
+        var chr = data.slice(offset, offset + 1);
+        var i = 2;
+        while (chr != stopchr) {
+            if ((i+offset) > data.length) {
+                error('Error', 'Invalid');
+            }
+            buf.push(chr);
+            chr = data.slice(offset + (i - 1),offset + i);
+            i += 1;
+        }
+        return [buf.length, buf.join('')];
+    };
+    var read_chrs = function (data, offset, length){
+        var buf;
+
+        buf = [];
+        for (var i = 0;i < length;i++){
+            var chr = data.slice(offset + (i - 1),offset + i);
+            buf.push(chr);
+            length -= utf8Overhead(chr); 
+        }
+        return [buf.length, buf.join('')];
+    };
+    var _unserialize = function (data, offset){
+        var readdata;
+        var readData;
+        var chrs = 0;
+        var ccount;
+        var stringlength;
+        var keyandchrs;
+        var keys;
+
+        if (!offset) {offset = 0;}
+        var dtype = (data.slice(offset, offset + 1)).toLowerCase();
+
+        var dataoffset = offset + 2;
+        var typeconvert = function(x) {return x;};
+
+        switch (dtype){
+            case 'i':
+                typeconvert = function (x) {return parseInt(x, 10);};
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+            break;
+            case 'b':
+                typeconvert = function (x) {return parseInt(x, 10) !== 0;};
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+            break;
+            case 'd':
+                typeconvert = function (x) {return parseFloat(x);};
+                readData = read_until(data, dataoffset, ';');
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 1;
+            break;
+            case 'n':
+                readdata = null;
+            break;
+            case 's':
+                ccount = read_until(data, dataoffset, ':');
+                chrs = ccount[0];
+                stringlength = ccount[1];
+                dataoffset += chrs + 2;
+
+                readData = read_chrs(data, dataoffset+1, parseInt(stringlength, 10));
+                chrs = readData[0];
+                readdata = readData[1];
+                dataoffset += chrs + 2;
+                if (chrs != parseInt(stringlength, 10) && chrs != readdata.length){
+                    error('SyntaxError', 'String length mismatch');
+                }
+
+                // Length was calculated on an utf-8 encoded string
+                // so wait with decoding
+                readdata = utf8_decode(readdata);
+            break;
+            case 'a':
+                readdata = {};
+
+                keyandchrs = read_until(data, dataoffset, ':');
+                chrs = keyandchrs[0];
+                keys = keyandchrs[1];
+                dataoffset += chrs + 2;
+
+                for (var i = 0; i < parseInt(keys, 10); i++){
+                    var kprops = _unserialize(data, dataoffset);
+                    var kchrs = kprops[1];
+                    var key = kprops[2];
+                    dataoffset += kchrs;
+
+                    var vprops = _unserialize(data, dataoffset);
+                    var vchrs = vprops[1];
+                    var value = vprops[2];
+                    dataoffset += vchrs;
+
+                    readdata[key] = value;
+                }
+
+                dataoffset += 1;
+            break;
+            default:
+                error('SyntaxError', 'Unknown / Unhandled data type(s): ' + dtype);
+            break;
+        }
+        return [dtype, dataoffset - offset, typeconvert(readdata)];
+    };
+    
+    return _unserialize((data+''), 0)[2];
+}

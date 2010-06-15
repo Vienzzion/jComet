@@ -1,1 +1,88 @@
-function utf8_decode(b){var c=[],d=0,e=0,f=0,g=0,h=0;b+='';while (d<b.length){f=b.charCodeAt(d);if (f<128){c[e++]=String.fromCharCode(f);d++;}else if ((f>191)&&(f<224)){g=b.charCodeAt(d+1);c[e++]=String.fromCharCode(((f&31)<<6)|(g&63));d+=2;}else {g=b.charCodeAt(d+1);h=b.charCodeAt(d+2);c[e++]=String.fromCharCode(((f&15)<<12)|((g&63)<<6)|(h&63));d+=3;}}return c.join('');}function utf8_encode(k){var l=(k+'');var m="";var o,p;var q=0;o=p=0;q=l.length;for (var r=0;r<q;r++){var f=l.charCodeAt(r);var s=null;if (f<128){p++;}else if (f>127&&f<2048){s=String.fromCharCode((f>>6)|192)+String.fromCharCode((f&63)|128);}else {s=String.fromCharCode((f>>12)|224)+String.fromCharCode(((f>>6)&63)|128)+String.fromCharCode((f&63)|128);}if (s!==null){if (p>o){m+=l.substring(o,p);}m+=s;o=p=r+1;}}if (p>o){m+=l.substring(o,l.length);}return m;}
+function utf8_decode ( str_data ) {
+    // Converts a UTF-8 encoded string to ISO-8859-1  
+    // 
+    // version: 1004.2314
+    // discuss at: http://phpjs.org/functions/utf8_decode
+    // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
+    // +      input by: Aman Gupta
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Norman "zEh" Fuchs
+    // +   bugfixed by: hitwork
+    // +   bugfixed by: Onno Marsman
+    // +      input by: Brett Zamir (http://brett-zamir.me)
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // *     example 1: utf8_decode('Kevin van Zonneveld');
+    // *     returns 1: 'Kevin van Zonneveld'
+    var tmp_arr = [], i = 0, ac = 0, c1 = 0, c2 = 0, c3 = 0;
+    
+    str_data += '';
+    
+    while ( i < str_data.length ) {
+        c1 = str_data.charCodeAt(i);
+        if (c1 < 128) {
+            tmp_arr[ac++] = String.fromCharCode(c1);
+            i++;
+        } else if ((c1 > 191) && (c1 < 224)) {
+            c2 = str_data.charCodeAt(i+1);
+            tmp_arr[ac++] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
+            i += 2;
+        } else {
+            c2 = str_data.charCodeAt(i+1);
+            c3 = str_data.charCodeAt(i+2);
+            tmp_arr[ac++] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            i += 3;
+        }
+    }
+ 
+    return tmp_arr.join('');
+}
+
+function utf8_encode ( argString ) {
+    // Encodes an ISO-8859-1 string to UTF-8  
+    // 
+    // version: 1004.2314
+    // discuss at: http://phpjs.org/functions/utf8_encode
+    // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: sowberry
+    // +    tweaked by: Jack
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Yves Sucaet
+    // +   bugfixed by: Onno Marsman
+    // +   bugfixed by: Ulrich
+    // *     example 1: utf8_encode('Kevin van Zonneveld');
+    // *     returns 1: 'Kevin van Zonneveld'
+    var string = (argString+''); // .replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+ 
+    var utftext = "";
+    var start, end;
+    var stringl = 0;
+ 
+    start = end = 0;
+    stringl = string.length;
+    for (var n = 0; n < stringl; n++) {
+        var c1 = string.charCodeAt(n);
+        var enc = null;
+ 
+        if (c1 < 128) {
+            end++;
+        } else if (c1 > 127 && c1 < 2048) {
+            enc = String.fromCharCode((c1 >> 6) | 192) + String.fromCharCode((c1 & 63) | 128);
+        } else {
+            enc = String.fromCharCode((c1 >> 12) | 224) + String.fromCharCode(((c1 >> 6) & 63) | 128) + String.fromCharCode((c1 & 63) | 128);
+        }
+        if (enc !== null) {
+            if (end > start) {
+                utftext += string.substring(start, end);
+            }
+            utftext += enc;
+            start = end = n+1;
+        }
+    }
+ 
+    if (end > start) {
+        utftext += string.substring(start, string.length);
+    }
+ 
+    return utftext;
+}
